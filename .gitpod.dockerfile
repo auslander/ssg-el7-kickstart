@@ -1,7 +1,5 @@
 FROM centos:7
 
-RUN yum grouplist
-
 RUN yum -y update \
   && yum reinstall -y glibc-common \ 
   && yum install -y asciidoc \
@@ -9,6 +7,7 @@ RUN yum -y update \
   less \
   man-db \
   sudo \
+  && yum groupinstall "Development Tools" \
   && yum clean all \
   && rm -rf /var/cache/yum \
   && rm -rf /tmp/*
