@@ -6,6 +6,10 @@ RUN yum -y update \
   && yum reinstall -y glibc-common \ 
   && yum install -y asciidoc \
   bash-completion \
+  gcc \
+  glibc \
+  gd \
+  gd-devel \
   git \
   less \
   man-db \
