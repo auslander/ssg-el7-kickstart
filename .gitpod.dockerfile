@@ -10,7 +10,7 @@ RUN yum -y update \
 RUN locale-gen en_US.UTF-8
 
 RUN yum clean all \
-  && rm -rf /var/cache/yum
+  && rm -rf /var/cache/yum \
   && rm -rf /tmp/*
 
 ENV LANG=en_US.UTF-8
