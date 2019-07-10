@@ -1,9 +1,7 @@
 FROM centos:7
 
-ENV container docker
-
-RUN yum update \
-  && yum install -y -q asciidoc \
+RUN yum -y update \
+  && yum install -y asciidoc \
   bash-completion \
   less \
   man-db \
