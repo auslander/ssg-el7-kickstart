@@ -7,7 +7,7 @@ RUN yum -y update \
   less \
   man-db \
   sudo \
-  && yum groupinstall "Development Tools" \
+  && yum groupinstall -y "Development Tools" \
   && yum clean all \
   && rm -rf /var/cache/yum \
   && rm -rf /tmp/*
