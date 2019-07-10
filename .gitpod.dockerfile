@@ -40,7 +40,10 @@ RUN { echo && echo "PS1='\[\e]0;\u \w\a\]\[\033[01;32m\]\u\[\033[00m\] \[\033[01
   
 ### Amazon Corretto Java 8 ###
 RUN yum install -y https://d3pxv6yz143wms.cloudfront.net/8.212.04.2/java-1.8.0-amazon-corretto-devel-1.8.0_212.b04-2.x86_64.rpm
-  
+
+# Change ownership of .pki folder in home directory to gitpod
+RUN chown -R gitpod:gitpod /home/gitpod/.pki
+
 ###  Gitpod user ###
 USER gitpod
 # use sudo so that user does not get sudo usage info on (the first) login
@@ -48,7 +51,7 @@ RUN sudo echo "Running 'sudo' for GitPod: success"
 
 ### Python ###
 ENV PATH=$HOME/.pyenv/bin:$HOME/.pyenv/shims:$PATH
-RUN curl -fsSL https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash \
+RUN curl -fsSL https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash > /dev/null \
   && { echo; \
     echo 'eval "$(pyenv init -)"'; \
     echo 'eval "$(pyenv virtualenv-init -)"'; } >> .bashrc \
@@ -56,12 +59,6 @@ RUN curl -fsSL https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-ins
   && pyenv global 3.6.6 \
   && pip install virtualenv pipenv python-language-server[all]==0.19.0 \
   && rm -rf /tmp/*
-
-### Root User ###
-USER root
-
-# Change ownership of .pki folder in home directory to gitpod
-RUN chown -R gitpod:gitpod /home/gitpod/.pki
 
 RUN notOwnedFile=$(find . -not "(" -user gitpod -and -group gitpod ")" -print -quit) \
     && { [ -z "$notOwnedFile" ] \
