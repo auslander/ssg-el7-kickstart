@@ -48,8 +48,7 @@ RUN rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY* \
   && yum clean all \
   && rm -rf /var/cache/yum \
   && rm -rf /tmp/* \
-  && mkdir /var/run/httpd \
-    /var/lock/httpd \
+  && mkdir /var/lock/httpd \
     /var/log/httpd \
   && mkdir /var/run/nginx \
   && chown -R gitpod:gitpod /etc/httpd /var/run/httpd /var/lock/httpd /var/log/httpd \
