@@ -1,4 +1,4 @@
 # The Docker image to run your workspace in. Defaults to gitpod/workspace-full
 image: 
-  # file: .gitpod.dockerfile
-  file: .test.dockerfile
+  file: .gitpod.dockerfile
+  
