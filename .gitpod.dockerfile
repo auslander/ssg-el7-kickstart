@@ -14,6 +14,8 @@ RUN yum -y update \
   less \
   make \
   man-db \
+  openssl \
+  openssl-devel \
   sudo \
   zlib \
   && yum clean all \
