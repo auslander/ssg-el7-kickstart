@@ -63,12 +63,22 @@ RUN yum -y update \
     unzip \
   && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
   && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
-  && yum -y install php-gd
-  
-
-### Amazon Corretto Java 8 ###
-RUN yum install -y https://d3pxv6yz143wms.cloudfront.net/8.212.04.2/java-1.8.0-amazon-corretto-devel-1.8.0_212.b04-2.x86_64.rpm \
-  && yum clean all \
+  && yum -y install php \ 
+    php-ctype \
+    php-curl \
+    php-date \
+    php-gd \
+    php-gettext \
+    php-intl \
+    php-json \
+    php-mbstring \
+    php-mysql \
+    php-pgsql \
+    php-sqlite3 \
+    php-tokenizer \
+    php-xml \
+    php-zip \
+  && yum -y clean all \
   && rm -rf /var/cache/yum \
   && rm -rf /tmp/*
 
@@ -80,15 +90,29 @@ USER gitpod
 # use sudo so that user does not get sudo usage info on (the first) login
 RUN sudo echo "Running 'sudo' for GitPod: success"
 
+### Java Maven Gradle ###
+RUN curl -s "https://get.sdkman.io" | bash \
+  && bash -c ". /home/gitpod/.sdkman/bin/sdkman-init.sh \
+  && sdk install java 8.0.212-amzn \
+  && sdk install gradle \
+  && sdk install maven \
+  && mkdir /home/gitpod/.m2 \
+  && printf '<settings>\n  <localRepository>/workspace/m2-repository/</localRepository>\n</settings>\n' > /home/gitpod/.m2/settings.xml"
+ENV GRADLE_USER_HOME=/workspace/.gradle/
+
 ### Python ###
 ENV PATH=$HOME/.pyenv/bin:$HOME/.pyenv/shims:$PATH
-RUN curl -fsSL https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash > /dev/null \
+RUN curl -fsSL https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash  \
   && { echo; \
     echo 'eval "$(pyenv init -)"'; \
     echo 'eval "$(pyenv virtualenv-init -)"'; } >> .bashrc \
-  && pyenv install 3.6.6 \
-  && pyenv global 3.6.6 \
-  && pip install virtualenv pipenv python-language-server[all]==0.19.0 \
+  && pyenv install 2.7.15 \
+  && pyenv install 3.7.2 \
+  && pyenv global 2.7.15 3.7.2 \
+  && pip2 install --upgrade pip \
+  && pip2 install virtualenv pipenv pylint rope flake8 autopep8 pep8 pylama pydocstyle bandit python-language-server[all]==0.25.0 \
+  && pip3 install --upgrade pip \
+  && pip3 install virtualenv pipenv pylint rope flake8 autopep8 pep8 pylama pydocstyle bandit python-language-server[all]==0.25.0 \
   && rm -rf /tmp/*
 
 RUN notOwnedFile=$(find . -not "(" -user gitpod -and -group gitpod ")" -print -quit) \
@@ -105,5 +129,8 @@ RUN notOwnedFile=$(find . -not "(" -user gitpod -and -group gitpod ")" -print -q
 # rm -f /lib/systemd/system/basic.target.wants/*;\
 # rm -f /lib/systemd/system/anaconda.target.wants/*;
 # VOLUME [ "/sys/fs/cgroup" ]
+
+###  root user ###
+User root
 
 # CMD ["/usr/sbin/init"]
