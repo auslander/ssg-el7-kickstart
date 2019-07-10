@@ -1,18 +1,19 @@
 FROM centos:7
 
+RUN yum grouplist
+
 RUN yum -y update \
   && yum reinstall -y glibc-common \ 
   && yum install -y asciidoc \
   bash-completion \
   less \
   man-db \
-  sudo 
-
-# RUN localedef -c -i en_US -f UTF-8 en_US.UTF-8
-
-RUN yum clean all \
+  sudo \
+  && yum clean all \
   && rm -rf /var/cache/yum \
   && rm -rf /tmp/*
+
+# RUN localedef -c -i en_US -f UTF-8 en_US.UTF-8
 
 ENV LANG=en_US.UTF-8
 
