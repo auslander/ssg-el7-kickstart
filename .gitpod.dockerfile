@@ -1,13 +1,16 @@
 FROM centos:7
 
+#RUN yum groupinstall -y "Development Tools" \
+
 RUN yum -y update \
   && yum reinstall -y glibc-common \ 
   && yum install -y asciidoc \
   bash-completion \
+  git \
   less \
   man-db \
   sudo \
-  && yum groupinstall -y "Development Tools" \
+  zlib \
   && yum clean all \
   && rm -rf /var/cache/yum \
   && rm -rf /tmp/*
