@@ -12,6 +12,7 @@ RUN yum -y update \
   gd-devel \
   git \
   less \
+  make \
   man-db \
   sudo \
   zlib \
