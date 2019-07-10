@@ -2,14 +2,19 @@ FROM centos:7
 
 ENV container docker
 
-RUN yum install -y -q asciidoc \
+RUN yum update \
+  && yum install -y -q asciidoc \
   bash-completion \
   less \
   man-db \
-  sudo \
-  && locale-gen en_US.UTF-8 \ 
-  && yum clean all \
+  sudo 
+
+RUN locale-gen en_US.UTF-8
+
+RUN yum clean all \
+  && rm -rf /var/cache/yum
   && rm -rf /tmp/*
+
 ENV LANG=en_US.UTF-8
 
 #Add gitpod user
