@@ -1,23 +1,25 @@
 FROM centos:7
 
-#RUN yum groupinstall -y "Development Tools" \
-
 RUN yum -y update \
   && yum reinstall -y glibc-common \ 
   && yum install -y asciidoc \
   bash-completion \
+  bzip2 bzip2-devel \
+  findutils \
   gcc \
   glibc \
-  gd \
-  gd-devel \
+  gd gd-devel \
   git \
   less \
+  libffi-devel \
   make \
   man-db \
-  openssl \
-  openssl-devel \
+  openssl openssl-devel \
+  readline-devel \
+  sqlite sqlite-devel \
   sudo \
-  zlib \
+  xz xz-devel \
+  zlib zlib-devel \
   && yum clean all \
   && rm -rf /var/cache/yum \
   && rm -rf /tmp/*
@@ -26,19 +28,17 @@ RUN yum -y update \
 
 ENV LANG=en_US.UTF-8
 
-#Add gitpod user
+# Add gitpod user
 RUN useradd -l -u 33333 -G wheel -md /home/gitpod -s /bin/bash -p gitpod gitpod \
     # passwordless sudo for users in the 'sudo' group
     && sed -i.bkp -e 's/%wheel\s\+ALL=(ALL\(:ALL\)\?)\s\+ALL/%wheel ALL=NOPASSWD:ALL/g' /etc/sudoers
 ENV HOME=/home/gitpod
 WORKDIR $HOME
 
-RUN chown -R gitpod:gitpod /home/gitpod/.pki
-
 # custom Bash prompt
 RUN { echo && echo "PS1='\[\e]0;\u \w\a\]\[\033[01;32m\]\u\[\033[00m\] \[\033[01;34m\]\w\[\033[00m\] \\\$ '" ; } >> .bashrc
   
-#Install Amazon Corretto Java 8  
+### Amazon Corretto Java 8 ###
 RUN yum install -y https://d3pxv6yz143wms.cloudfront.net/8.212.04.2/java-1.8.0-amazon-corretto-devel-1.8.0_212.b04-2.x86_64.rpm
   
 ###  Gitpod user ###
@@ -56,9 +56,13 @@ RUN curl -fsSL https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-ins
   && pyenv global 3.6.6 \
   && pip install virtualenv pipenv python-language-server[all]==0.19.0 \
   && rm -rf /tmp/*
-  
-RUN ls -al /home/gitpod
-  
+
+### Root User ###
+USER root
+
+# Change ownership of .pki folder in home directory to gitpod
+RUN chown -R gitpod:gitpod /home/gitpod/.pki
+
 RUN notOwnedFile=$(find . -not "(" -user gitpod -and -group gitpod ")" -print -quit) \
     && { [ -z "$notOwnedFile" ] \
         || { echo "Error: not all files/dirs in $HOME are owned by 'gitpod' user & group"; exit 1; } }  
