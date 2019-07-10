@@ -8,7 +8,7 @@ RUN yum -y update \
   man-db \
   sudo 
 
-RUN localedef -v -c -i en_US -f UTF-8 en_US.UTF-8
+# RUN localedef -c -i en_US -f UTF-8 en_US.UTF-8
 
 RUN yum clean all \
   && rm -rf /var/cache/yum \
@@ -59,4 +59,5 @@ rm -f /lib/systemd/system/sockets.target.wants/*initctl*; \
 rm -f /lib/systemd/system/basic.target.wants/*;\
 rm -f /lib/systemd/system/anaconda.target.wants/*;
 VOLUME [ "/sys/fs/cgroup" ]
+
 CMD ["/usr/sbin/init"]
