@@ -21,8 +21,8 @@ RUN yum -y update \
     xz xz-devel \
     zlib zlib-devel \
   && yum clean all \
-  && rm -rf /var/cache/yum \
-  && rm -rf /tmp/*
+  && rm -rf /var/cache/yum /tmp/*
+  
 
 # RUN localedef -c -i en_US -f UTF-8 en_US.UTF-8
 
@@ -49,7 +49,6 @@ RUN rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY* \
   && rm -rf /var/cache/yum \
   && rm -rf /tmp/* \
   && mkdir /var/lock/httpd \
-    /var/log/httpd \
   && mkdir /var/run/nginx \
   && chown -R gitpod:gitpod /etc/httpd /var/run/httpd /var/lock/httpd /var/log/httpd \
   && chown -R gitpod:gitpod /etc/nginx /var/run/nginx /var/lib/nginx/ /var/log/nginx/
@@ -78,8 +77,7 @@ RUN yum -y update \
     php-xml \
     php-zip \
   && yum -y clean all \
-  && rm -rf /var/cache/yum \
-  && rm -rf /tmp/*
+  && rm -rf /var/cache/yum /tmp/*
 
 # Change ownership of .pki folder in home directory to gitpod
 RUN chown -R gitpod:gitpod /home/gitpod/.pki
