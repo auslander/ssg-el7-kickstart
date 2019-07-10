@@ -1,13 +1,14 @@
 FROM centos:7
 
 RUN yum -y update \
+  && yum reinstall -y glibc-common \ 
   && yum install -y asciidoc \
   bash-completion \
   less \
   man-db \
   sudo 
 
-RUN locale-gen en_US.UTF-8
+RUN localedef -v -c -i en_US -f UTF-8 en_US.UTF-8
 
 RUN yum clean all \
   && rm -rf /var/cache/yum \
