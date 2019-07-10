@@ -2,8 +2,6 @@ FROM centos:7
 
 ENV container docker
 
-RUN yum install -y -q groupinstall 'Development Tools'
-
 RUN yum install -y -q asciidoc \
   bash-completion \
   less \
