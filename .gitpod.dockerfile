@@ -84,7 +84,7 @@ RUN chown -R gitpod:gitpod /home/gitpod/.pki
 
 ### Install 'which' which is needed for sdkman
 RUN yum -y update \
-  && yum -y which \
+  && yum -y install which \
   && yum -y clean all \
   && rm -rf /var/cache/yum /tmp/*
 
