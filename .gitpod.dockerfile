@@ -82,9 +82,10 @@ RUN yum -y update \
 # Change ownership of .pki folder in home directory to gitpod
 RUN chown -R gitpod:gitpod /home/gitpod/.pki
 
-### Install 'which' which is needed for sdkman
+### Install 'which' and 'zip' which are needed for sdkman
 RUN yum -y update \
   && yum -y install which \
+    zip \
   && yum -y clean all \
   && rm -rf /var/cache/yum /tmp/*
 
