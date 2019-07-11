@@ -122,8 +122,8 @@ RUN curl -fsSL https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-ins
 ###  root user ###
 USER root
 
-RUN ls -al /home/gitpod \ 
-      /home/gitpod/.composer
+RUN rm /home/gitpod/composer-setup.php \
+  && rm -rf /home/gitpod/.composer
 
 RUN notOwnedFile=$(find . -not "(" -user gitpod -and -group gitpod ")" -print -quit) \
     && { [ -z "$notOwnedFile" ] \
