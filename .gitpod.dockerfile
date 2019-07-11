@@ -119,7 +119,11 @@ RUN curl -fsSL https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-ins
   && pip3 install virtualenv pipenv pylint rope flake8 autopep8 pep8 pylama pydocstyle bandit python-language-server[all]==0.25.0 \
   && rm -rf /tmp/*
 
-RUN ls -al /home/gitpod
+###  root user ###
+USER root
+
+RUN ls -al /home/gitpod \ 
+      /home/gitpod/.composer
 
 RUN notOwnedFile=$(find . -not "(" -user gitpod -and -group gitpod ")" -print -quit) \
     && { [ -z "$notOwnedFile" ] \
@@ -136,7 +140,6 @@ RUN notOwnedFile=$(find . -not "(" -user gitpod -and -group gitpod ")" -print -q
 # rm -f /lib/systemd/system/anaconda.target.wants/*;
 # VOLUME [ "/sys/fs/cgroup" ]
 
-###  root user ###
-USER root
+
 
 # CMD ["/usr/sbin/init"]
