@@ -88,7 +88,10 @@ USER gitpod
 RUN sudo echo "Running 'sudo' for GitPod: success"
 
 ### Java Maven Gradle ###
-RUN curl -s "https://get.sdkman.io" | bash \
+RUN yum -y update \
+  && yum -y install php-cli \
+    php-zip \
+  && curl -s "https://get.sdkman.io" | bash \
   && bash -c ". /home/gitpod/.sdkman/bin/sdkman-init.sh \
   && sdk install java 8.0.212-amzn \
   && sdk install gradle \
