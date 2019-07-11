@@ -135,6 +135,6 @@ RUN notOwnedFile=$(find . -not "(" -user gitpod -and -group gitpod ")" -print -q
 # VOLUME [ "/sys/fs/cgroup" ]
 
 ###  root user ###
-User root
+USER root
 
 # CMD ["/usr/sbin/init"]
