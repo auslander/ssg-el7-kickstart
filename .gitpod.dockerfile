@@ -82,16 +82,19 @@ RUN yum -y update \
 # Change ownership of .pki folder in home directory to gitpod
 RUN chown -R gitpod:gitpod /home/gitpod/.pki
 
+### Install 'which' which is needed for sdkman
+RUN yum -y update \
+  && yum -y which \
+  && yum -y clean all \
+  && rm -rf /var/cache/yum /tmp/*
+
 ###  Gitpod user ###
 USER gitpod
 # use sudo so that user does not get sudo usage info on (the first) login
 RUN sudo echo "Running 'sudo' for GitPod: success"
 
 ### Java Maven Gradle ###
-RUN yum -y update \
-  && yum -y install php-cli \
-    php-zip \
-  && curl -s "https://get.sdkman.io" | bash \
+RUN curl -s "https://get.sdkman.io" | bash \
   && bash -c ". /home/gitpod/.sdkman/bin/sdkman-init.sh \
   && sdk install java 8.0.212-amzn \
   && sdk install gradle \
